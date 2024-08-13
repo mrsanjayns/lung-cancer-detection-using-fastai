@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PlumoScan</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            color: #333;
+        }
+        .header-section {
+            background-color: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            color: rgb(238, 241, 243);
+            padding: 2rem 0;
+            margin-bottom: 2rem;
+        }
+        .card {
+            border: none;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+        }
+        .card-header {
+            background-color: #007bff;
+            color: rgb(221, 228, 232);
+        }
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+        }
+        .img-preview {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .result-confidence {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #007bff;
+        }
+        .warning {
+            background-color: #fff3cd;
+            border: 1px solid #ffeeba;
+            border-radius: 4px;
+            padding: 1rem;
+            margin-bottom: 2rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="header-section text-center">
+            <h1>PlumoScan - Analysis Result</h1>
+        </div>
+
+        <div class="container">
+            <div class="warning">
+                <strong>Disclaimer:</strong> This analysis is based on machine learning and should not be considered as a definitive medical diagnosis. Please consult with a healthcare professional for proper interpretation and advice.
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="text-center mb-0">{{ explanation['name'] }} ({{ prediction }})</h2>
+                        </div>
+                        <div class="card-body text-center">
+                            <p class="result-confidence">Confidence: {{ "%.2f"|format(probability*100) }}%</p>
+                            <img src="{{ url_for('static', filename='uploads/' + filename) }}" alt="Uploaded Lung Image" class="img-preview mb-3">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="mb-0">Detailed Information</h3>
+                        </div>
+                        <div class="card-body">
+                            <p><strong>Description:</strong> {{ explanation['description'] }}</p>
+                            
+                            {% if 'symptoms' in explanation %}
+                            <p><strong>Common Symptoms:</strong> {{ explanation['symptoms'] }}</p>
+                            {% endif %}
+
+                            {% if 'risk_factors' in explanation %}
+                            <p><strong>Risk Factors:</strong> {{ explanation['risk_factors'] }}</p>
+                            {% endif %}
+
+                            {% if 'prevention' in explanation %}
+                            <p><strong>Prevention:</strong> {{ explanation['prevention'] }}</p>
+                            {% endif %}
+
+                            {% if 'treatment' in explanation %}
+                            <p><strong>Treatment Options:</strong> {{ explanation['treatment'] }}</p>
+                            {% endif %}
+
+                            {% if 'prognosis' in explanation %}
+                            <p><strong>Prognosis:</strong> {{ explanation['prognosis'] }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card mt-4">
+                <div class="card-header">
+                    <h3 class="mb-0">Additional Information</h3>
+                </div>
+                <div class="card-body">
+                    {% if 'screening' in explanation %}
+                    <p><strong>Screening Recommendations:</strong> {{ explanation['screening'] }}</p>
+                    {% endif %}
+
+                    {% if 'research' in explanation %}
+                    <p><strong>Recent Research:</strong> {{ explanation['research'] }}</p>
+                    {% endif %}
+
+                    {% if 'importance' in explanation %}
+                    <p><strong>Importance:</strong> {{ explanation['importance'] }}</p>
+                    {% endif %}
+
+                    {% if 'health_tips' in explanation %}
+                    <p><strong>Health Tips:</strong> {{ explanation['health_tips'] }}</p>
+                    {% endif %}
+
+                    {% if 'follow_up' in explanation %}
+                    <p><strong>Follow-up Recommendations:</strong> {{ explanation['follow_up'] }}</p>
+                    {% endif %}
+
+                    {% if 'risk_reduction' in explanation %}
+                    <p><strong>Risk Reduction:</strong> {{ explanation['risk_reduction'] }}</p>
+                    {% endif %}
+
+                    {% if 'general_lung_health' in explanation %}
+                    <p><strong>General Lung Health Tips:</strong> {{ explanation['general_lung_health'] }}</p>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="text-center mt-5 mb-5">
+                <a href="/" class="btn btn-primary btn-lg">Analyze Another Image</a>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

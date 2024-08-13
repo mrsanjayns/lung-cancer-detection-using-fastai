@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PlumoScan</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            font-family: 'Montserrat', sans-serif;
+            color: #ffffff;
+            min-height: 100vh;
+        }
+        .container-fluid { padding: 50px 5%; }
+        .section {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 30px;
+            padding: 40px;
+            margin-bottom: 50px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+        .section:hover {
+            transform: translateY(-5px);
+        }
+        h1, h2, h3, h4, h5 {
+            font-family: 'Playfair Display', serif;
+            color: #fdbb2d;
+        }
+        .img-preview {
+            max-width: 100%;
+            height: auto;
+            border-radius: 20px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            margin-top: 20px;
+        }
+        .btn {
+            border-radius: 30px;
+            padding: 12px 30px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+        }
+        .btn-primary {
+            background-color: #fdbb2d;
+            border-color: #fdbb2d;
+            color: #1a2a6c;
+        }
+        .btn-primary:hover {
+            background-color: #1a2a6c;
+            border-color: #1a2a6c;
+            color: #fdbb2d;
+        }
+        .btn-success {
+            background-color: #4CAF50;
+            border-color: #4CAF50;
+        }
+        .btn-success:hover {
+            background-color: #45a049;
+            border-color: #45a049;
+        }
+        .card {
+            background: rgba(26, 42, 108, 0.7);
+            border: none;
+            border-radius: 20px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            height: 100%;
+        }
+        .card:hover {
+            transform: scale(1.03);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+        }
+        .card-body {
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        .card-title {
+            color: #fdbb2d;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        .card-text {
+            color: #ffffff;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            flex-grow: 1;
+        }
+        .chart-container {
+            position: relative;
+            margin: auto;
+            height: 300px;
+            width: 300px;
+        }
+        .news-card {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        .news-card .card-body {
+            flex-grow: 1;
+        }
+        .news-card .btn {
+            align-self: flex-start;
+            margin-top: auto;
+        }
+        .statistics-box {
+            background: rgba(253, 187, 45, 0.2);
+            border-radius: 20px;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .statistics-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #fdbb2d;
+        }
+        .header-section {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        .header-section h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        .header-section p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .upload-section {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+        .upload-form {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .upload-icon {
+            font-size: 4rem;
+            color: #fdbb2d;
+            margin-bottom: 20px;
+        }
+        .file-name {
+            margin-top: 10px;
+            font-style: italic;
+        }
+        .upload-animation {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(to right, #fdbb2d, #1a2a6c);
+            transform: translateX(-100%);
+            animation: upload-progress 2s ease-in-out infinite;
+        }
+        @keyframes upload-progress {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+        .drag-drop-zone {
+            border: 2px dashed #fdbb2d;
+            border-radius: 20px;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+        .drag-drop-zone.dragover {
+            background: rgba(253, 187, 45, 0.2);
+        }
+        .faq-section {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 30px;
+        }
+        .faq-title {
+            color: #ffd700;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .faq-item {
+            margin-bottom: 15px;
+        }
+        .faq-question {
+            background: rgba(0, 0, 0, 0.2);
+            color: #ffd700;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .faq-question:hover {
+            background: rgba(0, 0, 0, 0.3);
+        }
+        .faq-answer {
+            display: none;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 0 0 5px 5px;
+        }
+        .faq-question::after {
+            content: '\25BC';
+            float: right;
+            transition: transform 0.3s ease;
+        }
+        .faq-question.active::after {
+            transform: rotate(180deg);
+        }
+        .timeline-section {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 30px;
+        }
+        .timeline-title {
+            color: #ffd700;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .timeline {
+            position: relative;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .timeline::after {
+            content: '';
+            position: absolute;
+            width: 6px;
+            background-color: #ffd700;
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            margin-left: -3px;
+        }
+        .timeline-container {
+            padding: 10px 40px;
+            position: relative;
+            background-color: inherit;
+            width: 50%;
+        }
+        .timeline-container::after {
+            content: '';
+            position: absolute;
+            width: 25px;
+            height: 25px;
+            right: -17px;
+            background-color: #1e3c72;
+            border: 4px solid #ffd700;
+            top: 15px;
+            border-radius: 50%;
+            z-index: 1;
+        }
+        .left {
+            left: 0;
+        }
+        .right {
+            left: 50%;
+        }
+        .left::before {
+            content: " ";
+            height: 0;
+            position: absolute;
+            top: 22px;
+            width: 0;
+            z-index: 1;
+            right: 30px;
+            border: medium solid #ffd700;
+            border-width: 10px 0 10px 10px;
+            border-color: transparent transparent transparent #ffd700;
+        }
+        .right::before {
+            content: " ";
+            height: 0;
+            position: absolute;
+            top: 22px;
+            width: 0;
+            z-index: 1;
+            left: 30px;
+            border: medium solid #ffd700;
+            border-width: 10px 10px 10px 0;
+            border-color: transparent #ffd700 transparent transparent;
+        }
+        .right::after {
+            left: -16px;
+        }
+        .timeline-content {
+            padding: 20px 30px;
+            background-color: rgba(0, 0, 0, 0.2);
+            position: relative;
+            border-radius: 6px;
+            color: #ffffff;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .timeline-content:hover {
+            background-color: rgba(0, 0, 0, 0.3);
+        }
+        .timeline-content h2 {
+            color: #ffd700;
+        }
+        .timeline-content p {
+            margin: 0;
+            line-height: 1.6;
+            font-size: 14px;
+        }
+        .timeline-content .read-more {
+            display: none;
+            margin-top: 10px;
+        }
+        @media screen and (max-width: 600px) {
+            .timeline::after {
+                left: 31px;
+            }
+            .timeline-container {
+                width: 100%;
+                padding-left: 70px;
+                padding-right: 25px;
+            }
+            .timeline-container::before {
+                left: 60px;
+                border: medium solid #ffd700;
+                border-width: 10px 10px 10px 0;
+                border-color: transparent #ffd700 transparent transparent;
+            }
+            .left::after, .right::after {
+                left: 15px;
+            }
+            .right {
+                left: 0%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="header-section">
+            <h1>PlumoScan</h1>
+            <p>Advanced Histopathological Image Analysis for Lung Cancer Detection</p>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="section upload-section">
+                    <h3>Upload Histopathological Image</h3>
+                    <div class="upload-animation"></div>
+                    <form action="/predict" method="post" enctype="multipart/form-data" class="upload-form">
+                        <div class="drag-drop-zone" id="dropZone">
+                            <i class="fas fa-cloud-upload-alt upload-icon"></i>
+                            <p>Drag and drop your image here or click to select</p>
+                            <input type="file" id="file" name="file" required onchange="loadFile(event)" style="display:none;">
+                        </div>
+                        <div class="text-center">
+                            <label for="file" class="btn btn-primary btn-lg">Select Image</label>
+                            <p class="file-name" id="fileName"></p>
+                        </div>
+                        <div class="text-center mt-4">
+                            <button type="submit" class="btn btn-success btn-lg">Analyze Image</button>
+                        </div>
+                    </form>
+                    <img id="output" class="img-preview" />
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="section">
+                    <h3>Types of Lung Cancer</h3>
+                    <div class="row">
+                        <div class="col-md-4 mb-4">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title">Benign</h5>
+                                    <p class="card-text">Non-cancerous growths that do not spread. Generally harmless but may require monitoring.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-4">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title">Adenocarcinoma</h5>
+                                    <p class="card-text">Most common type, starts in mucus-producing cells. Often found in outer lung areas.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-4">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title">Squamous Cell</h5>
+                                    <p class="card-text">Begins in squamous cells lining airways. Often linked to smoking, found centrally in lungs.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        
+<div class="section">
+            <h3>Understanding Lung Cancer</h3>
+            <div class="card">
+                <div class="card-body">
+                    <p class="card-text">Lung cancer is characterized by uncontrolled cell growth in lung tissues. While smoking is the primary cause, other factors like exposure to radon, asbestos, and air pollution can contribute. Early detection through regular screenings can significantly improve treatment outcomes.</p>
+                    <h5>Key Symptoms:</h5>
+                    <ul>
+                        <li>Persistent cough</li>
+                        <li>Chest pain</li>
+                        <li>Shortness of breath</li>
+                        <li>Unexplained weight loss</li>
+                    </ul>
+                    <p class="card-text"><strong>Prevention:</strong> Avoid smoking, limit exposure to secondhand smoke and known carcinogens, maintain a healthy diet, and exercise regularly.</p>
+                </div>
+            </div>
+        </div>
+        <div class="timeline-section">
+        <h2 class="timeline-title">Lung Cancer Early Detection Timeline</h2>
+        <div class="timeline">
+            <div class="timeline-container left">
+                <div class="timeline-content">
+                    <h2>Stage 0 (Carcinoma in situ)</h2>
+                    <p>Abnormal cells found in the lining of the airways.</p>
+                    <p class="read-more">This is the earliest stage of lung cancer and is highly treatable. Regular screenings can help detect cancer at this stage.</p>
+                </div>
+            </div>
+            <div class="timeline-container right">
+                <div class="timeline-content">
+                    <h2>Stage I</h2>
+                    <p>Cancer is found in the lung but has not spread outside the lung.</p>
+                    <p class="read-more">Early detection at this stage significantly improves survival rates. The 5-year survival rate can be as high as 92% with early intervention.</p>
+                </div>
+            </div>
+            <div class="timeline-container left">
+                <div class="timeline-content">
+                    <h2>Stage II</h2>
+                    <p>Cancer has spread to nearby lymph nodes or the chest wall.</p>
+                    <p class="read-more">Detection at this stage still offers good treatment options. The 5-year survival rate is around 53% to 60%.</p>
+                </div>
+            </div>
+            <div class="timeline-container right">
+                <div class="timeline-content">
+                    <h2>Stage III</h2>
+                    <p>Cancer has spread to lymph nodes in the middle of the chest or other nearby structures.</p>
+                    <p class="read-more">Treatment becomes more challenging, but there are still options available. Early detection before reaching this stage is crucial.</p>
+                </div>
+            </div>
+            <div class="timeline-container left">
+                <div class="timeline-content">
+                    <h2>Stage IV</h2>
+                    <p>Cancer has spread to both lungs, the fluid around the lungs, or other parts of the body.</p>
+                    <p class="read-more">Treatment at this stage focuses on prolonging life and managing symptoms. This emphasizes the critical importance of early detection and regular screenings.</p>
+                </div>
+            </div>
+            <div class="timeline-container right">
+                <div class="timeline-content">
+                    <h2>The Importance of Early Detection</h2>
+                    <p>Early detection dramatically improves treatment outcomes and survival rates.</p>
+                    <p class="read-more">Regular screenings, especially for high-risk individuals, can lead to detection at earlier stages. Tools like LungScan Pro aid in quicker and more accurate early-stage diagnoses.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.querySelectorAll('.timeline-content').forEach(content => {
+            content.addEventListener('click', () => {
+                const readMore = content.querySelector('.read-more');
+                if (readMore.style.display === 'none' || readMore.style.display === '') {
+                    readMore.style.display = 'block';
+                } else {
+                    readMore.style.display = 'none';
+                }
+            });
+        });
+    </script>
+
+        <div class="section">
+            <h3>Latest Research and Articles</h3>
+            <div id="newsContainer" class="row">
+                <!-- Articles will be dynamically inserted here -->
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="section">
+                    <h3>Lung Cancer in India: Key Statistics</h3>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="statistics-box">
+                                <div class="statistics-number">72,000</div>
+                                <p>New cases annually</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="statistics-box">
+                                <div class="statistics-number">63,000</div>
+                                <p>Deaths per year</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="section">
+                    <h3>Gender Distribution</h3>
+                    <div class="chart-container">
+                        <canvas id="lungCancerChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    </div>
+    <div class="faq-section">
+        <h2 class="faq-title">Frequently Asked Questions</h2>
+        
+        <div class="faq-item">
+            <div class="faq-question">What is lung cancer?</div>
+            <div class="faq-answer">Lung cancer is a type of cancer that begins in the lungs, usually in the cells lining the air passages. It occurs when cells in the lung grow and divide uncontrollably, forming a tumor that can spread to other parts of the body.</div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question">What are the main types of lung cancer?</div>
+            <div class="faq-answer">The two main types of lung cancer are Non-Small Cell Lung Cancer (NSCLC) and Small Cell Lung Cancer (SCLC). NSCLC is more common and includes subtypes like adenocarcinoma, squamous cell carcinoma, and large cell carcinoma.</div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question">What are the risk factors for lung cancer?</div>
+            <div class="faq-answer">The primary risk factor is smoking, but other factors include exposure to secondhand smoke, radon gas, asbestos, air pollution, and a family history of lung cancer. People with chronic lung diseases may also have an increased risk.</div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question">How does PlumoScan work?</div>
+            <div class="faq-answer">PlumoScan uses advanced deep learning algorithms to analyze histopathological images of lung tissue. It can detect patterns and anomalies that may indicate the presence of cancerous cells, assisting in early and accurate diagnosis.</div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question">How accurate is PlumoScan?</div>
+            <div class="faq-answer">While PlumoScan has shown high accuracy in initial tests around 99.96, it's important to note that it's a diagnostic aid and not a replacement for professional medical evaluation. The system's accuracy continues to improve as it's trained on more data.</div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question">Can PlumoScan replace traditional diagnostic methods?</div>
+            <div class="faq-answer">PlumoScan is designed to complement, not replace, traditional diagnostic methods. It serves as an additional tool to assist medical professionals in making more informed and quicker diagnoses.</div>
+        </div>
+
+        
+    </div>
+
+    <script>
+        document.querySelectorAll('.faq-question').forEach(question => {
+            question.addEventListener('click', () => {
+                question.classList.toggle('active');
+                const answer = question.nextElementSibling;
+                if (answer.style.display === 'block') {
+                    answer.style.display = 'none';
+                } else {
+                    answer.style.display = 'block';
+                }
+            });
+        });
+    </script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        function initPieChart() {
+            
+var ctx = document.getElementById('lungCancerChart').getContext('2d');
+            var pieChart = new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: ['Male', 'Female'],
+                    datasets: [{
+                        data: [71788, 26490],
+                        backgroundColor: ['#fdbb2d', '#b21f1f'],
+                        borderColor: 'rgba(255, 255, 255, 0.5)',
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                color: '#ffffff',
+                                font: {
+                                    size: 14,
+                                    family: "'Montserrat', sans-serif"
+                                }
+                            }
+                        },
+                        title: {
+                            display: true,
+                            text: 'Lung Cancer Cases by Gender',
+                            color: '#fdbb2d',
+                            font: {
+                                size: 18,
+                                family: "'Playfair Display', serif",
+                                weight: 'bold'
+                            }
+                        }
+                    }
+                }
+            });
+
+        }
+
+        var loadFile = function(event) {
+            var output = document.getElementById('output');
+            output.src = URL.createObjectURL(event.target.files[0]);
+            output.onload = function() {
+                URL.revokeObjectURL(output.src);
+            }
+            document.getElementById('fileName').textContent = event.target.files[0].name;
+        };
+
+        // Drag and drop functionality
+        var dropZone = document.getElementById('dropZone');
+        var fileInput = document.getElementById('file');
+
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            dropZone.addEventListener(eventName, preventDefaults, false);
+        });
+
+        function preventDefaults(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+
+        ['dragenter', 'dragover'].forEach(eventName => {
+            dropZone.addEventListener(eventName, highlight, false);
+        });
+
+        ['dragleave', 'drop'].forEach(eventName => {
+            dropZone.addEventListener(eventName, unhighlight, false);
+        });
+
+        function highlight(e) {
+            dropZone.classList.add('dragover');
+        }
+
+        function unhighlight(e) {
+            dropZone.classList.remove('dragover');
+        }
+
+        dropZone.addEventListener('drop', handleDrop, false);
+
+        function handleDrop(e) {
+            var dt = e.dataTransfer;
+            var files = dt.files;
+            fileInput.files = files;
+            loadFile({target: fileInput});
+        }
+
+        async function fetchLungCancerNews() {
+            // ... 
+ const apiUrl = 'https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pubmed&term=lung+cancer&retmode=json&sort=date&retmax=3';
+            try {
+                const response = await fetch(apiUrl);
+                const data = await response.json();
+                const idList = data.esearchresult.idlist;
+                
+                for (const id of idList) {
+                    const articleUrl = `https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&id=${id}&retmode=json`;
+                    const articleResponse = await fetch(articleUrl);
+                    const articleData = await articleResponse.json();
+                    const article = articleData.result[id];
+                    displayArticle(article);
+                }
+            } catch (error) {
+                console.error('Error fetching news:', error);
+            }
+
+        }
+
+        function displayArticle(article) {
+            // 
+           const newsContainer = document.getElementById('newsContainer');
+            const articleCard = `
+                <div class="col-md-4 mb-4">
+                    <div class="card news-card">
+                        <div class="card-body">
+                            <h5 class="card-title">${article.title}</h5>
+                            <p class="card-text">${article.sortpubdate}</p>
+                            <a href="https://pubmed.ncbi.nlm.nih.gov/${article.uid}" target="_blank" class="btn btn-primary btn-sm">Read More</a>
+                        </div>
+                    </div>
+                </div>
+            `;
+            newsContainer.innerHTML += articleCard;
+
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            initPieChart();
+            fetchLungCancerNews();
+        });
+    </script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
